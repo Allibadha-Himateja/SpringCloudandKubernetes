@@ -1,0 +1,62 @@
+
+// this is the file which will tell you how to containerize your springboot application
+
+
+the process starts with
+creating the jar file of your present application
+
+1) open the terminal for the project you want to containerize
+FOR INSTANCE WE TAKE
+---PS D:\SpringFiles\SpringCloud&Kubernetes\OrderAPI>
+2) we have to run the following command to create the jar file for this application
+    -------------->mvn clean package
+        this will compile and test the application and after all that
+        we will create the jar packages
+     THIS WILL CREATE THE JAR PACKAGING OF THIS APPLICATION
+     IN THE     /target Folder inside your project
+3) Testing the jar packaging weather it is running or not
+    -------------> java -jar target/OrderAPI-0.0.1-SNAPSHOT.jar
+    -> this will initiate the Springboot application
+    -> which hosts the order controller at port:8082
+    -> test this controller's endpoint with the postman get call
+
+4) after making sure that our jar packaging will run we have to
+    CREATE THE DOCKER FILE FOR YOUR PROJECT WHICH WILL be responsible for
+    creating the Docker image for your project
+    ----->Dockerfile can only be one for each project
+    #FROM eclipse-temurin:17-jdk-alpine
+    #WORKDIR /app
+    #COPY target/OrderAPI-0.0.1-SNAPSHOT.jar app.jar
+    #ENTRYPOINT ["java","-jar","app.jar"]
+
+    this is a basic docker file for any project(springboot)
+
+5) for creating the image for this application
+    we have this command
+    -> docker build -t(tag option) <image_name> <path>
+    -> for this instance we have
+           docker build -t order-api:1.0  .
+       here the order-api:1.0 is the name:tag for the image
+       the name of the resulting image is "order-api" and the tag is "1.0"
+       AND "."  IS THE CURRECT LOCATION WHICH CONTAINS THE DOCKERFILE for our app
+
+6) CHECKING WEATHER WE HAVE CREATED THE DOCKERIMAGE OR NOT
+    with command
+            docker images
+            we can able to see the image name "order-api" .
+
+7) now that we have a Docker image we need to be able to run this application from the docker
+        docker run <docker-imagename>:tag
+        // randomly the image will create a container(WITH RANDOM CONTAINER NAME)
+        //docker run --name my-container image-name:tag
+
+        // IMPORTANT : -p IS USED FOR PORT-MAPPING or PORT-PUBLISHING
+        // docker run -p HOST_PORT:CONTAINER_PORT image_name:tag
+            so we have hosting port which is in application.properties (8082)
+            and for the container we can host with different port (anything like 44444 or 11111 etc....)
+
+        /// the commad which will run our app container is
+            docker run -p 8082:8082 order-api:1.0
+
+8) check the url with postman
+    make a get call for this end point and we will get the "this is order controller" message.....
