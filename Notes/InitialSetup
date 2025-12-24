@@ -1,0 +1,48 @@
+
+
+// for implementing the kubernetes architecture
+// we must have the prerequisite knowledge of few concepts
+
+->Docker Containerisation
+->VM's virtualization
+->Distributed IP's
+
+the introduction of Kubernetes is a vast concept before that we will be taking few
+installation and configuration steps for Docker and Kubernetes
+
+---> INSTALLATION AND SETTING UP THE DOCKER IN WINDOWS
+for the docker installation we need to go  docker website and download the docker for the windows
+and it is also recommended to use the docker desktop
+
+after installation and setup of the docker
+we have to test the docker installation from the command prompt using the command
+docker desktop start
+this will start the docker desktop
+
+// after successfully running the docker desktop
+
+--->  THE MOST CRUCIAL TOOL WHICH IS ESSENTIAL FOR USING THE KUBERNETES IN THE LOCAL NODE IS
+      > kubectl
+
+THE KUBECTL IS AUTOMATICALLY DOWNLOADED WHEN WE DOWNLOAD AND SETUP THE DOCKER DESKTOP
+
+so we dont have to manually install the kubectl by ourselves
+
+->>> we have to next pull an image in the docker desktop
+
+--> that is minikube -> this is a opensource tool to run and maintain the kubernetes cluster inside your
+local system/machine
+
+-> the command for installing the minikube in the local docker desktop
+------- >minikube start --driver=docker
+this is download and create the container in the docker desktop
+( CHECKOUT THE CMD PROMPTS.TXT FOR DETAILS)
+
+so after installing and running the minikube in the docker
+we have to verify wheather it is running or not with the below commands
+-> kubectl get nodes
+-> minikube status
+-> minikude dashboard(kubernetes dashboard which hold services/container/pods .....etc)
+
+if the minikube is running we will get the success status with this commands
+
