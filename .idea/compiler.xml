@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile name="Annotation profile for OrderAPI" enabled="true">
+      <profile name="Annotation profile for ProductAPI" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -14,10 +14,14 @@
         <module name="OrderAPI" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ProdAPI" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="OrderAPI" options="-parameters" />
+      <module name="ProdAPI" options="-parameters" />
       <module name="ProductAPI" options="-parameters" />
     </option>
   </component>

@@ -1,0 +1,116 @@
+
+
+/// the ingress acts as a advance version of both the
+    NODEPORT AND LOADBALANCING
+
+Without Ingress, you expose services like this:
+Service A → NodePort 30001
+Service B → NodePort 30002
+Service C → NodePort 30003
+
+❌ Problems:
+Random ports
+No domain names
+No HTTPS
+Hard to manage
+
+***Definition:-
+Ingress is an HTTP/HTTPS entry point to your Kubernetes cluster
+
+***Ingress Architecture:-(Important)
+the ingress has two main components
+1) Ingress Controller(Actual Engine) NGINX, Traefik, HAProxy
+2) Ingress Resource (Rules) YAML file, Defines routing rules
+Internet
+   |
+Ingress Controller (NGINX)
+   |
+Ingress Rules
+   |
+Service
+   |
+Pods
+
+
+/// IMPLEMENTATION OF INGRESS IN KUBERNETES CLUSTER:-
+
+Step 1: Enable Ingress through minikube
+
+        minikube addons enable ingress
+
+
+Step 2: Verify the Controller
+
+        kubectl get pods -n ingress-nginx
+
+Step 3: as of now we have two services with ClusterIP configured
+        in both the order and product service yaml
+        spec:
+          type: ClusterIP
+          selector:
+            app: order
+          ports:
+            - port: 80
+              targetPort: 8080
+
+Step 4:
+        create a Ingress.yaml inside the folder k8s/
+
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: app-ingress
+          annotations:
+            nginx.ingress.kubernetes.io/rewrite-target: /
+        spec:
+          ingressClassName: nginx
+          rules:
+            - host: myapp.local
+              http:
+                paths:
+                  - path: /orders
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: order-service
+                        port:
+                          number: 80
+                  - path: /products
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: product-service
+                        port:
+                          number: 80
+
+        and then we have to run these commands
+
+                kubectl apply -f .\Ingress.yaml (for applying it into minikube)
+
+            for getting the ingress IP
+
+                PS D:\SpringFiles\SpringCloud&Kubernetes\k8s> kubectl get ingress
+                NAME          CLASS   HOSTS         ADDRESS        PORTS   AGE
+                app-ingress   nginx   myapp.local   192.168.49.2   80      2m37s
+
+Step 5:  Very Important Step
+
+        1️⃣1️⃣ Map Domain to IP (Very Important)
+
+        Ingress uses domain names, so update your hosts file.
+
+        Windows
+        C:\Windows\System32\drivers\etc\hosts (save this file with properties ->permission to Users)
+
+        Add:
+        192.168.49.2   myapp.local
+
+Step 6: Testing the Ingress with the url
+
+            before testing we have to ensure (MOSTTTTTT IMPORTANT)
+                    minikube tunnel
+            WITHOUT THIS COMMAND WE CANT ACTIVATE THE LOADBALANCING OR INGRESS FOR MINIKUBE CLUSTER
+
+            http://myapp.local/orders and http://myapp.local/products
+
+    test this from the browser or postman call you can able to see the results...

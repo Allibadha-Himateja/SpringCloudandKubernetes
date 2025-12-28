@@ -1,0 +1,23 @@
+
+
+//crud commands kubectl
+create deployment
+edit deployment
+delete deployment
+
+//status of different components
+kubectl get nodes | pod | services | replicaset | deployment
+
+//debugging pods
+-> pod logs
+            kubectl logs [pod_name]
+-> get interactive terminal
+            kubectl exec -it pod_name ::bin/bash
+-> get info about pod
+            kubectl describe pod pod_name
+-> apply a config file
+            kubectl apply -f filename
+-> delete a file
+            kubectl delete -f filename
+
+
