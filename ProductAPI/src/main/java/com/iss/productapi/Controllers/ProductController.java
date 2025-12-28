@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class ProductController {
 
-    @GetMapping("/")
+//    @GetMapping("/")
     @ResponseBody
+    @GetMapping
     public String getService()
     {
         return "this is Product controller";

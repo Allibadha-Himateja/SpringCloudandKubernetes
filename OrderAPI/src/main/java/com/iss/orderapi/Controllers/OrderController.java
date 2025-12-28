@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orders")
 public class OrderController {
 
-    @GetMapping("/")
+//    @GetMapping("/") this has wasted 5 hrs of your time
+    @GetMapping
     @ResponseBody
     public String getService()
     {
