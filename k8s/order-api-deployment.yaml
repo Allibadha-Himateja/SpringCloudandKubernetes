@@ -18,6 +18,5 @@ spec:
       containers:
         - name: order-api
           image: order-api:1.0
-          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8082

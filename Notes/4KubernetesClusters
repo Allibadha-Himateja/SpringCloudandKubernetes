@@ -1,0 +1,75 @@
+
+
+// The kubernetes is mainly a tool of applying the distributed concepts like
+microservices
+
+the kubernetes will be able to maintain and manage the group of nodes called Clusters
+
+the node is a machine which has individual resources like ram and cpu
+these nodes are connected in a distributed architecture with the help of kubernetes
+with the minikube(which is a tool for applying the kubernetes in local that is single node system)
+
+the way creating the multinode cluster with minikube
+        minikube start --nodes 2 -p local-cluster --driver=docker
+
+here we have to start the minikube with the -p(dedicated for applying the name)
+"local cluster is the name of the cluster with 2 nodes"
+
+the two nodes are
+Master node
+Worker node
+
+the master node will be managing the
+API server
+Load Balancer
+etcd
+Controller manager
+
+the worker node contains
+Kubelet
+Pods
+
+these pods contain the Containers and the containers are (microservice)
+
+PS D:\SpringFiles\SpringCloud&Kubernetes> minikube profile list
+┌───────────────┬────────┬─────────┬──────────────┬─────────┬─────────┬───────┬────────────────┬────────────────────┐
+│    PROFILE    │ DRIVER │ RUNTIME │      IP      │ VERSION │ STATUS  │ NODES │ ACTIVE PROFILE │ ACTIVE KUBECONTEXT │
+├───────────────┼────────┼─────────┼──────────────┼─────────┼─────────┼───────┼────────────────┼────────────────────┤
+│ local-cluster │ docker │ docker  │ 192.168.58.2 │ v1.34.0 │ OK      │ 2     │                │ *                  │
+│ minikube      │ docker │ docker  │ 192.168.49.2 │ v1.34.0 │ Stopped │ 1     │ *              │                    │
+└───────────────┴────────┴─────────┴──────────────┴─────────┴─────────┴───────┴────────────────┴────────────────────┘
+
+for running the named cluster use the command
+            minikube start -p local-cluster
+
+for making the nodes are working we have to manually setup configurations
+Deployment
+Service
+
+
+
+how is minikube able to achieve this MULTIPLE NODES
+VIA     DOCKER NETWORK
+
+minikube       : 192.168.49.2
+local-cluster  : 192.168.58.2
+
+Minikube created two separate Docker networks:
+Network 192.168.49.0/24 for the minikube cluster
+Network 192.168.58.0/24 for the local-cluster
+
+Each is like a separate private LAN for its cluster.
+
+HOW MINIKUBE USES DOCKER NETWORKS
+When you ran
+            minikube start --nodes 2 -p local-cluster --driver=docker
+
+What Happened:
+Created a Docker network: 192.168.58.0/24
+Created master container (control-plane): 192.168.58.2
+Created worker container: 192.168.58.3 (not shown in your output)
+Connected both containers to the same network
+
+Enabled Kubernetes components to communicate:
+Master (API Server) ──── Docker Network ──── Worker (Kubelet)
+     192.168.58.2         192.168.58.0/24        192.168.58.3
