@@ -1,0 +1,71 @@
+
+
+/// after creating the container of your application inside the docker desktop
+    we have to import that container into the minikube
+
+// we have a lot of concept which tells about the
+
+1)  make sure to run the docker desktop first
+        cause the minikube is an image which is created with docker as its virtualizer
+        ( we can have multiple hypervisors
+            in windows we have Hyper-V which is one of the features which we can add
+            but for running the minikube with the Hyper-V we have to install the
+            minikube manually
+        )THIS WAS ROLE OF HYPERVISORS WITH KUBERNETES
+
+2) after running the docker desktop we have to
+    start the minikube from the docker driver
+
+        minikube start --driver=docker
+    verify weather its running or not
+        -> kubectl get notes
+3) after successfully running the minikube
+    we have to check the minikube cluster (of what images does the minikube contains)
+
+    for that use the command(ONLY IN THE POWERSHELL)
+    & minikube -p minikube docker-env | Invoke-Expression
+    or
+    {
+      minikube docker-env(inside the no ps terminal)
+      It will output something like:
+      SET DOCKER_HOST=tcp://127.0.0.1:...
+      SET DOCKER_CERT_PATH=...
+      SET DOCKER_TLS_VERIFY=1
+
+      Copy & paste those SET commands manually into cmd
+      Example:
+      SET DOCKER_HOST=tcp://127.0.0.1:...
+      SET DOCKER_CERT_PATH=C:\Users\...\certs
+      SET DOCKER_TLS_VERIFY=1
+
+      After that:
+      docker images
+    }
+
+
+    //This command is used for connecting your local Docker CLI
+     to Minikube's internal Docker daemon.
+     What It Actually Does:
+     Without this command:
+     bash
+     docker ps  # Shows containers from your LOCAL Docker Desktop/WSL
+     docker images  # Shows images from your LOCAL machine
+     After running this command:
+     bash
+     docker ps  # Shows containers running INSIDE Minikube
+     docker images  # Shows images stored IN Minikube's Docker registry
+
+4) all what we did above was to check weather we have already imported the order-api image into the
+    minikube or not
+    if not
+
+    we have to
+        minikube image load order-api:1.0
+        and again run
+        docker image (after minikude cli config)///above step
+        NOW WE CAN ABLE TO SEE THE order-api image
+
+5) for running that image we have to configure somethings
+    which are
+            1) create the order-api-deployment.yaml(Deployment yaml for your microservice)
+            2) create the order-api-service.yaml(service yaml for your microservice)

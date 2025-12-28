@@ -35,7 +35,7 @@ FOR INSTANCE WE TAKE
     we have this command
     -> docker build -t(tag option) <image_name> <path>
     -> for this instance we have
-           docker build -t order-api:1.0  .
+           docker build -t order-api:1.0  .(THIS IS DOT)
        here the order-api:1.0 is the name:tag for the image
        the name of the resulting image is "order-api" and the tag is "1.0"
        AND "."  IS THE CURRECT LOCATION WHICH CONTAINS THE DOCKERFILE for our app
@@ -60,3 +60,40 @@ FOR INSTANCE WE TAKE
 
 8) check the url with postman
     make a get call for this end point and we will get the "this is order controller" message.....
+
+
+
+ISSUES WHEN CONTAINERIZING THE PROJECT
+----> MOST IMPORTANT NOTE
+      we have to use the jdk 17 ONLYYY
+      CAUSE IF WE USE THE 25 IT WILL THROW EXCEPTION
+      Exception in thread "main" java.lang.UnsupportedClassVersionError: com/iss/orderapi/OrderApiApplication
+      has been compiled by a more recent version of the Java Runtime (class file version 69.0),
+       this version of the Java Runtime only recognizes class file versions up to 61.0
+
+        WHICH IS ABOUT WE HAVE THE DOCKER FILE MAPPED WITH VERSION 17 BUT THE JAR PACKING WHICH WE CREATED IS OF
+        JDK 25
+
+        WE HAVE TO UNDO THE JAR PACKAGIN AND WE SHOULD SET THE JAR PACKAGIN IN THE pom.xml
+        to version
+        17 instead of 25
+
+        FIRST DELETE THE ALREADY EXISTING JAR PACKING
+        NEXT CHANGE THE POM.XML
+        CREATE THE NEW JAR PACKING
+
+        VERIFY THAT WE HAVE THE CORRECT VERSION WITH COMMAND
+        javap -verbose target/OrderAPI-0.0.1-SNAPSHOT.jar | findstr "major"
+        -->THIS SHOULD GIVE
+            major version: 61
+
+
+        FORGOT TO TELL YOU WE HAVE TO REDO(RECREATE) THE DOCKER IMAGE TOO
+        docker build --no-cache -t order-api:1.0 .
+        //for rebuilding the application
+
+        NOW THAT WE HAVE CLEARED THE VERSION ISSUE WE CAN ABLE TO WRITE THE DockerFile
+        and run the
+        docker build command
+
+

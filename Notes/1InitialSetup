@@ -34,7 +34,25 @@ so we dont have to manually install the kubectl by ourselves
 local system/machine
 
 -> the command for installing the minikube in the local docker desktop
-------- >minikube start --driver=docker
+------- >minikube start --driver=docker/// This mainly for one node implementation
+
+------- > minikube start --nodes 2 -p local-cluster --driver=docker
+//// this particular command can able to run the two node cluster within our minikube cluster
+// The -p local-cluster flag in the command
+    specifies the name of the minikube cluster profile to create or use.
+    This allows users to manage multiple isolated clusters on the same machine,
+    each with its own settings and drivers.
+    In this case, a cluster named local-cluster is created with two nodes using the Docker driver.
+
+// in order to again use this same cluster we have to run
+            minikube start -p local-cluster
+// how to display the container with are registered in that cluster
+
+// how to add a new microservice in that cluster
+
+// how to access the info / status
+            minikube status -p local-cluster
+
 this is download and create the container in the docker desktop
 ( CHECKOUT THE CMD PROMPTS.TXT FOR DETAILS)
 
